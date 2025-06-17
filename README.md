@@ -3,7 +3,7 @@
 
 Aplicación móvil multiplataforma que ayuda a estudiantes universitarios a organizar su vida académica, sus hábitos personales, su alimentación y su actividad física. El proyecto utiliza arquitectura modular para facilitar el desarrollo y la escalabilidad.
 
-*--------------------------*
+---
 
 ## 🚀 Tecnologías utilizadas
 
@@ -11,7 +11,7 @@ Aplicación móvil multiplataforma que ayuda a estudiantes universitarios a orga
 - Backend: Serverpod (Dart)
 - Base de datos: PostgreSQL
 
-*--------------------------*
+---
 
 ## 📂 Estructura del proyecto
 /backend_client/ # Cliente para conexión con backend
