@@ -29,7 +29,7 @@ webServer:
 
 # This is the database setup for your server.
 database:
-  host: localhost
+  host: db
   port: 5432
   name: miapp
   user: postgres
