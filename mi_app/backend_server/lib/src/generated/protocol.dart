@@ -11,8 +11,10 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 import 'package:serverpod/protocol.dart' as _i2;
-import 'usuario.dart' as _i3;
-import 'package:backend_server/src/generated/usuario.dart' as _i4;
+import 'evento.dart' as _i3;
+import 'usuario.dart' as _i4;
+import 'package:backend_server/src/generated/evento.dart' as _i5;
+export 'evento.dart';
 export 'usuario.dart';
 
 class Protocol extends _i1.SerializationManagerServer {
@@ -23,6 +25,62 @@ class Protocol extends _i1.SerializationManagerServer {
   static final Protocol _instance = Protocol._();
 
   static final List<_i2.TableDefinition> targetTableDefinitions = [
+    _i2.TableDefinition(
+      name: 'evento',
+      dartName: 'Evento',
+      schema: 'public',
+      module: 'backend',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'nextval(\'evento_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'titulo',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: 'descripcion',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: 'fecha',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _i2.ColumnDefinition(
+          name: 'usuarioId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+      ],
+      foreignKeys: [],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'evento_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            )
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        )
+      ],
+      managed: true,
+    ),
     _i2.TableDefinition(
       name: 'usuario',
       dartName: 'Usuario',
@@ -88,14 +146,20 @@ class Protocol extends _i1.SerializationManagerServer {
     Type? t,
   ]) {
     t ??= T;
-    if (t == _i3.Usuario) {
-      return _i3.Usuario.fromJson(data) as T;
+    if (t == _i3.Evento) {
+      return _i3.Evento.fromJson(data) as T;
     }
-    if (t == _i1.getType<_i3.Usuario?>()) {
-      return (data != null ? _i3.Usuario.fromJson(data) : null) as T;
+    if (t == _i4.Usuario) {
+      return _i4.Usuario.fromJson(data) as T;
     }
-    if (t == List<_i4.Usuario>) {
-      return (data as List).map((e) => deserialize<_i4.Usuario>(e)).toList()
+    if (t == _i1.getType<_i3.Evento?>()) {
+      return (data != null ? _i3.Evento.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i4.Usuario?>()) {
+      return (data != null ? _i4.Usuario.fromJson(data) : null) as T;
+    }
+    if (t == List<_i5.Evento>) {
+      return (data as List).map((e) => deserialize<_i5.Evento>(e)).toList()
           as T;
     }
     try {
@@ -108,7 +172,10 @@ class Protocol extends _i1.SerializationManagerServer {
   String? getClassNameForObject(Object? data) {
     String? className = super.getClassNameForObject(data);
     if (className != null) return className;
-    if (data is _i3.Usuario) {
+    if (data is _i3.Evento) {
+      return 'Evento';
+    }
+    if (data is _i4.Usuario) {
       return 'Usuario';
     }
     className = _i2.Protocol().getClassNameForObject(data);
@@ -124,8 +191,11 @@ class Protocol extends _i1.SerializationManagerServer {
     if (dataClassName is! String) {
       return super.deserializeByClassName(data);
     }
+    if (dataClassName == 'Evento') {
+      return deserialize<_i3.Evento>(data['data']);
+    }
     if (dataClassName == 'Usuario') {
-      return deserialize<_i3.Usuario>(data['data']);
+      return deserialize<_i4.Usuario>(data['data']);
     }
     if (dataClassName.startsWith('serverpod.')) {
       data['className'] = dataClassName.substring(10);
@@ -143,8 +213,10 @@ class Protocol extends _i1.SerializationManagerServer {
       }
     }
     switch (t) {
-      case _i3.Usuario:
-        return _i3.Usuario.t;
+      case _i3.Evento:
+        return _i3.Evento.t;
+      case _i4.Usuario:
+        return _i4.Usuario.t;
     }
     return null;
   }

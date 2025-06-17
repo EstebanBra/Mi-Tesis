@@ -1,0 +1,7 @@
+class: Evento
+table: evento
+fields:
+  titulo: String
+  descripcion: String
+  fecha: DateTime
+  usuarioId: int

@@ -1,3 +1,7 @@
+evento:
+  - crearEvento:
+  - obtenerEventos:
+  - eliminarEvento:
 usuario:
-  - obtenerUsuarios:
-  - agregarUsuario:
+  - login:
+  - crearUsuario:

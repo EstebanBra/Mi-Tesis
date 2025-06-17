@@ -11,8 +11,48 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import 'dart:async' as _i2;
-import 'package:backend_client/src/protocol/usuario.dart' as _i3;
-import 'protocol.dart' as _i4;
+import 'package:backend_client/src/protocol/evento.dart' as _i3;
+import 'package:backend_client/src/protocol/usuario.dart' as _i4;
+import 'protocol.dart' as _i5;
+
+/// {@category Endpoint}
+class EndpointEvento extends _i1.EndpointRef {
+  EndpointEvento(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'evento';
+
+  _i2.Future<_i3.Evento> crearEvento(
+    String titulo,
+    String descripcion,
+    DateTime fecha,
+    int idUsuario,
+  ) =>
+      caller.callServerEndpoint<_i3.Evento>(
+        'evento',
+        'crearEvento',
+        {
+          'titulo': titulo,
+          'descripcion': descripcion,
+          'fecha': fecha,
+          'idUsuario': idUsuario,
+        },
+      );
+
+  _i2.Future<List<_i3.Evento>> obtenerEventos(int idUsuario) =>
+      caller.callServerEndpoint<List<_i3.Evento>>(
+        'evento',
+        'obtenerEventos',
+        {'idUsuario': idUsuario},
+      );
+
+  _i2.Future<void> eliminarEvento(int idEvento) =>
+      caller.callServerEndpoint<void>(
+        'evento',
+        'eliminarEvento',
+        {'idEvento': idEvento},
+      );
+}
 
 /// {@category Endpoint}
 class EndpointUsuario extends _i1.EndpointRef {
@@ -21,18 +61,32 @@ class EndpointUsuario extends _i1.EndpointRef {
   @override
   String get name => 'usuario';
 
-  _i2.Future<List<_i3.Usuario>> obtenerUsuarios() =>
-      caller.callServerEndpoint<List<_i3.Usuario>>(
+  _i2.Future<_i4.Usuario?> login(
+    String correo,
+    String contrasena,
+  ) =>
+      caller.callServerEndpoint<_i4.Usuario?>(
         'usuario',
-        'obtenerUsuarios',
-        {},
+        'login',
+        {
+          'correo': correo,
+          'contrasena': contrasena,
+        },
       );
 
-  _i2.Future<_i3.Usuario> agregarUsuario(String nombre) =>
-      caller.callServerEndpoint<_i3.Usuario>(
+  _i2.Future<_i4.Usuario> crearUsuario(
+    String nombre,
+    String correo,
+    String contrasena,
+  ) =>
+      caller.callServerEndpoint<_i4.Usuario>(
         'usuario',
-        'agregarUsuario',
-        {'nombre': nombre},
+        'crearUsuario',
+        {
+          'nombre': nombre,
+          'correo': correo,
+          'contrasena': contrasena,
+        },
       );
 }
 
@@ -52,7 +106,7 @@ class Client extends _i1.ServerpodClientShared {
     bool? disconnectStreamsOnLostInternetConnection,
   }) : super(
           host,
-          _i4.Protocol(),
+          _i5.Protocol(),
           securityContext: securityContext,
           authenticationKeyManager: authenticationKeyManager,
           streamingConnectionTimeout: streamingConnectionTimeout,
@@ -62,13 +116,19 @@ class Client extends _i1.ServerpodClientShared {
           disconnectStreamsOnLostInternetConnection:
               disconnectStreamsOnLostInternetConnection,
         ) {
+    evento = EndpointEvento(this);
     usuario = EndpointUsuario(this);
   }
+
+  late final EndpointEvento evento;
 
   late final EndpointUsuario usuario;
 
   @override
-  Map<String, _i1.EndpointRef> get endpointRefLookup => {'usuario': usuario};
+  Map<String, _i1.EndpointRef> get endpointRefLookup => {
+        'evento': evento,
+        'usuario': usuario,
+      };
 
   @override
   Map<String, _i1.ModuleEndpointCaller> get moduleLookup => {};

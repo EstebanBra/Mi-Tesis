@@ -10,8 +10,10 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
-import 'usuario.dart' as _i2;
-import 'package:backend_client/src/protocol/usuario.dart' as _i3;
+import 'evento.dart' as _i2;
+import 'usuario.dart' as _i3;
+import 'package:backend_client/src/protocol/evento.dart' as _i4;
+export 'evento.dart';
 export 'usuario.dart';
 export 'client.dart';
 
@@ -28,14 +30,20 @@ class Protocol extends _i1.SerializationManager {
     Type? t,
   ]) {
     t ??= T;
-    if (t == _i2.Usuario) {
-      return _i2.Usuario.fromJson(data) as T;
+    if (t == _i2.Evento) {
+      return _i2.Evento.fromJson(data) as T;
     }
-    if (t == _i1.getType<_i2.Usuario?>()) {
-      return (data != null ? _i2.Usuario.fromJson(data) : null) as T;
+    if (t == _i3.Usuario) {
+      return _i3.Usuario.fromJson(data) as T;
     }
-    if (t == List<_i3.Usuario>) {
-      return (data as List).map((e) => deserialize<_i3.Usuario>(e)).toList()
+    if (t == _i1.getType<_i2.Evento?>()) {
+      return (data != null ? _i2.Evento.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i3.Usuario?>()) {
+      return (data != null ? _i3.Usuario.fromJson(data) : null) as T;
+    }
+    if (t == List<_i4.Evento>) {
+      return (data as List).map((e) => deserialize<_i4.Evento>(e)).toList()
           as T;
     }
     return super.deserialize<T>(data, t);
@@ -45,7 +53,10 @@ class Protocol extends _i1.SerializationManager {
   String? getClassNameForObject(Object? data) {
     String? className = super.getClassNameForObject(data);
     if (className != null) return className;
-    if (data is _i2.Usuario) {
+    if (data is _i2.Evento) {
+      return 'Evento';
+    }
+    if (data is _i3.Usuario) {
       return 'Usuario';
     }
     return null;
@@ -57,8 +68,11 @@ class Protocol extends _i1.SerializationManager {
     if (dataClassName is! String) {
       return super.deserializeByClassName(data);
     }
+    if (dataClassName == 'Evento') {
+      return deserialize<_i2.Evento>(data['data']);
+    }
     if (dataClassName == 'Usuario') {
-      return deserialize<_i2.Usuario>(data['data']);
+      return deserialize<_i3.Usuario>(data['data']);
     }
     return super.deserializeByClassName(data);
   }

@@ -2,18 +2,18 @@ import 'package:serverpod/serverpod.dart';
 import '../generated/protocol.dart';
 
 class UsuarioEndpoint extends Endpoint {
-  // Método para listar todos los usuarios
-  Future<List<Usuario>> obtenerUsuarios(Session session) async {
-    return await Usuario.db.find(session);
+  Future<Usuario?> login(Session session, String correo, String contrasena) async {
+    var usuarios = await Usuario.db.find(
+      session,
+      where: (u) => u.correo.equals(correo) & u.claveHash.equals(contrasena),
+    );
+    return usuarios.isNotEmpty ? usuarios.first : null;
   }
 
-  // Método para agregar un usuario
-  Future<Usuario> agregarUsuario(Session session, String nombre) async {
-    var nuevoUsuario = Usuario(
-      nombre: nombre,
-      // otros campos obligatorios si existen
-    );
-    await Usuario.db.insertRow(session, nuevoUsuario);
-    return nuevoUsuario;
+  Future<Usuario> crearUsuario(Session session, String nombre, String correo, String contrasena) async {
+    var nuevo = Usuario(nombre: nombre, correo: correo, claveHash: contrasena);
+    await Usuario.db.insertRow(session, nuevo);
+    return nuevo;
   }
 }
+

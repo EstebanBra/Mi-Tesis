@@ -14,7 +14,8 @@
 import 'package:serverpod_test/serverpod_test.dart' as _i1;
 import 'package:serverpod/serverpod.dart' as _i2;
 import 'dart:async' as _i3;
-import 'package:backend_server/src/generated/usuario.dart' as _i4;
+import 'package:backend_server/src/generated/evento.dart' as _i4;
+import 'package:backend_server/src/generated/usuario.dart' as _i5;
 import 'package:backend_server/src/generated/protocol.dart';
 import 'package:backend_server/src/generated/endpoints.dart';
 export 'package:serverpod_test/serverpod_test_public_exports.dart';
@@ -99,6 +100,8 @@ void withServerpod(
 }
 
 class TestEndpoints {
+  late final _EventoEndpoint evento;
+
   late final _UsuarioEndpoint usuario;
 }
 
@@ -109,10 +112,120 @@ class _InternalTestEndpoints extends TestEndpoints
     _i2.SerializationManager serializationManager,
     _i2.EndpointDispatch endpoints,
   ) {
+    evento = _EventoEndpoint(
+      endpoints,
+      serializationManager,
+    );
     usuario = _UsuarioEndpoint(
       endpoints,
       serializationManager,
     );
+  }
+}
+
+class _EventoEndpoint {
+  _EventoEndpoint(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<_i4.Evento> crearEvento(
+    _i1.TestSessionBuilder sessionBuilder,
+    String titulo,
+    String descripcion,
+    DateTime fecha,
+    int idUsuario,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'evento',
+        method: 'crearEvento',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'evento',
+          methodName: 'crearEvento',
+          parameters: _i1.testObjectToJson({
+            'titulo': titulo,
+            'descripcion': descripcion,
+            'fecha': fecha,
+            'idUsuario': idUsuario,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<_i4.Evento>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _i3.Future<List<_i4.Evento>> obtenerEventos(
+    _i1.TestSessionBuilder sessionBuilder,
+    int idUsuario,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'evento',
+        method: 'obtenerEventos',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'evento',
+          methodName: 'obtenerEventos',
+          parameters: _i1.testObjectToJson({'idUsuario': idUsuario}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<List<_i4.Evento>>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _i3.Future<void> eliminarEvento(
+    _i1.TestSessionBuilder sessionBuilder,
+    int idEvento,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'evento',
+        method: 'eliminarEvento',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'evento',
+          methodName: 'eliminarEvento',
+          parameters: _i1.testObjectToJson({'idEvento': idEvento}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<void>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
   }
 }
 
@@ -126,26 +239,32 @@ class _UsuarioEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<List<_i4.Usuario>> obtenerUsuarios(
-      _i1.TestSessionBuilder sessionBuilder) async {
+  _i3.Future<_i5.Usuario?> login(
+    _i1.TestSessionBuilder sessionBuilder,
+    String correo,
+    String contrasena,
+  ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
           (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
         endpoint: 'usuario',
-        method: 'obtenerUsuarios',
+        method: 'login',
       );
       try {
         var _localCallContext = await _endpointDispatch.getMethodCallContext(
           createSessionCallback: (_) => _localUniqueSession,
           endpointPath: 'usuario',
-          methodName: 'obtenerUsuarios',
-          parameters: _i1.testObjectToJson({}),
+          methodName: 'login',
+          parameters: _i1.testObjectToJson({
+            'correo': correo,
+            'contrasena': contrasena,
+          }),
           serializationManager: _serializationManager,
         );
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<List<_i4.Usuario>>);
+        ) as _i3.Future<_i5.Usuario?>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -153,28 +272,34 @@ class _UsuarioEndpoint {
     });
   }
 
-  _i3.Future<_i4.Usuario> agregarUsuario(
+  _i3.Future<_i5.Usuario> crearUsuario(
     _i1.TestSessionBuilder sessionBuilder,
     String nombre,
+    String correo,
+    String contrasena,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
           (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
         endpoint: 'usuario',
-        method: 'agregarUsuario',
+        method: 'crearUsuario',
       );
       try {
         var _localCallContext = await _endpointDispatch.getMethodCallContext(
           createSessionCallback: (_) => _localUniqueSession,
           endpointPath: 'usuario',
-          methodName: 'agregarUsuario',
-          parameters: _i1.testObjectToJson({'nombre': nombre}),
+          methodName: 'crearUsuario',
+          parameters: _i1.testObjectToJson({
+            'nombre': nombre,
+            'correo': correo,
+            'contrasena': contrasena,
+          }),
           serializationManager: _serializationManager,
         );
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<_i4.Usuario>);
+        ) as _i3.Future<_i5.Usuario>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
