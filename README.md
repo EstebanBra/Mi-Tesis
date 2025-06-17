@@ -14,6 +14,9 @@ Aplicación móvil multiplataforma que ayuda a estudiantes universitarios a orga
 ---
 
 ## 📂 Estructura del proyecto
+
+---
+
 /backend_client/ # Cliente para conexión con backend
 /backend_server/ # Backend principal (Serverpod)
 /frontend_flutter/ # Aplicación móvil Flutter
@@ -21,3 +24,5 @@ Aplicación móvil multiplataforma que ayuda a estudiantes universitarios a orga
   widgets/ # Widgets reutilizables
   modelos/ # Modelos de datos globales
   servicios/ # Conexión a backend y lógica general
+
+---
