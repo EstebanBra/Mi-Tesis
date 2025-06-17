@@ -1,0 +1,7 @@
+class: Usuario
+table: usuario
+fields:
+  nombre: String
+  correo: String?
+  fechaRegistro: DateTime?
+  claveHash: String?
