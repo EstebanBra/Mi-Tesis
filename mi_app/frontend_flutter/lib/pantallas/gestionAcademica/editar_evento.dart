@@ -2,39 +2,51 @@ import 'package:flutter/material.dart';
 import '../../servicios/evento_servicio.dart';
 import '../../utilidades/colores.dart';
 import '../../widgets/tarjeta_formulario.dart';
+import 'package:backend_client/backend_client.dart';
 
-class CrearEvento extends StatefulWidget {
+class EditarEvento extends StatefulWidget {
   final EventoServicio eventoServicio;
-  final int idUsuario;
-  const CrearEvento({
+  final Evento evento; // objeto evento actual
+
+  const EditarEvento({
     required this.eventoServicio,
-    required this.idUsuario,
+    required this.evento,
     super.key,
   });
 
   @override
-  State<CrearEvento> createState() => _CrearEventoState();
+  State<EditarEvento> createState() => _EditarEventoState();
 }
 
-class _CrearEventoState extends State<CrearEvento> {
-  final tituloController = TextEditingController();
-  final descripcionController = TextEditingController();
-  DateTime? fecha;
+class _EditarEventoState extends State<EditarEvento> {
+  late TextEditingController tituloController;
+  late TextEditingController descripcionController;
+  late DateTime fecha;
   String mensaje = '';
 
-  Future<void> _crearEvento() async {
+  @override
+  void initState() {
+    super.initState();
+    tituloController = TextEditingController(text: widget.evento.titulo);
+    descripcionController = TextEditingController(
+      text: widget.evento.descripcion,
+    );
+    fecha = widget.evento.fecha;
+  }
+
+  Future<void> _editarEvento() async {
     if (tituloController.text.isEmpty || fecha == null) {
       setState(() => mensaje = 'Título y fecha son obligatorios');
       return;
     }
     try {
-      await widget.eventoServicio.crearEvento(
+      await widget.eventoServicio.editarEvento(
+        widget.evento.id!,
         tituloController.text,
         descripcionController.text,
-        fecha!,
-        widget.idUsuario,
+        fecha,
       );
-      setState(() => mensaje = 'Evento creado');
+      setState(() => mensaje = 'Evento actualizado');
       Future.delayed(const Duration(seconds: 1), () {
         if (!mounted) return;
         Navigator.pop(context);
@@ -49,7 +61,7 @@ class _CrearEventoState extends State<CrearEvento> {
     return Scaffold(
       backgroundColor: ColoresApp.fondoSecundario,
       appBar: AppBar(
-        title: const Text('Crear Evento'),
+        title: const Text('Editar Evento'),
         backgroundColor: ColoresApp.fondoSecundario,
         foregroundColor: ColoresApp.textoPrincipal,
         elevation: 0,
@@ -57,7 +69,7 @@ class _CrearEventoState extends State<CrearEvento> {
       body: Center(
         child: SingleChildScrollView(
           child: WidgetTarjetaFormulario(
-            titulo: "Nuevo Evento",
+            titulo: "Editar Evento",
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -75,29 +87,25 @@ class _CrearEventoState extends State<CrearEvento> {
                   onPressed: () async {
                     final seleccion = await showDatePicker(
                       context: context,
-                      initialDate: DateTime.now(),
+                      initialDate: fecha,
                       firstDate: DateTime(2020),
                       lastDate: DateTime(2100),
                     );
                     if (seleccion != null) setState(() => fecha = seleccion);
                   },
-                  child: Text(
-                    fecha == null
-                        ? 'Seleccionar fecha'
-                        : fecha.toString().split(' ')[0],
-                  ),
+                  child: Text(fecha.toString().split(' ')[0]),
                 ),
                 const SizedBox(height: 18),
                 ElevatedButton(
-                  onPressed: _crearEvento,
-                  child: const Text('Crear evento'),
+                  onPressed: _editarEvento,
+                  child: const Text('Guardar cambios'),
                 ),
                 const SizedBox(height: 12),
                 if (mensaje.isNotEmpty)
                   Text(
                     mensaje,
                     style: TextStyle(
-                      color: mensaje.contains('creado')
+                      color: mensaje.contains('actualizado')
                           ? ColoresApp.habitos
                           : ColoresApp.textoSecundario,
                       fontSize: 13,

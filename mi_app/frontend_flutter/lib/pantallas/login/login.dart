@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import '../../servicios/usuario_servicio.dart';
 import '../../pantallas/gestionAcademica/lista_eventos.dart';
 import '../../servicios/evento_servicio.dart';
-import 'package:backend_client/backend_client.dart';
+import '../../utilidades/colores.dart';
+import '../login/witget_tarjeta_auth.dart';
 
 class Login extends StatefulWidget {
   final UsuarioServicio usuarioServicio;
-  final EventoServicio eventoServicio; // <-- agrega esto
+  final EventoServicio eventoServicio;
 
   const Login({
     required this.usuarioServicio,
@@ -48,35 +49,74 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            TextField(
-              controller: correoController,
-              decoration: const InputDecoration(labelText: 'Correo'),
+      backgroundColor: ColoresApp.fondoSecundario,
+      body: Center(
+        child: SingleChildScrollView(
+          child: WidgetTarjetaAuth(
+            titulo: 'Bienvenido',
+            subtitulo: 'Inicia sesión en tu cuenta',
+            child: Column(
+              children: [
+                TextField(
+                  controller: correoController,
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.email_outlined),
+                    labelText: 'Correo electrónico',
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: contrasenaController,
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.lock_outline),
+                    labelText: 'Contraseña',
+                    suffixIcon: Icon(Icons.visibility_off), // (opcional)
+                  ),
+                  obscureText: true,
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _login,
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(44),
+                    backgroundColor: ColoresApp.academico,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: const Text(
+                    'Iniciar Sesión',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                if (mensaje.isNotEmpty)
+                  Text(
+                    mensaje,
+                    style: TextStyle(
+                      color: mensaje.contains('exitoso')
+                          ? ColoresApp.habitos
+                          : ColoresApp.textoSecundario,
+                      fontSize: 13,
+                    ),
+                  ),
+                const SizedBox(height: 12),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/registro');
+                  },
+                  style: TextButton.styleFrom(
+                    foregroundColor: ColoresApp.academico,
+                  ),
+                  child: const Text('¿No tienes cuenta? Regístrate'),
+                ),
+              ],
             ),
-            TextField(
-              controller: contrasenaController,
-              decoration: const InputDecoration(labelText: 'Contraseña'),
-              obscureText: true,
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: _login,
-              child: const Text('Iniciar sesión'),
-            ),
-            const SizedBox(height: 12),
-            Text(mensaje),
-            const SizedBox(height: 12),
-            TextButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/registro');
-              },
-              child: const Text('¿No tienes cuenta? Regístrate'),
-            ),
-          ],
+          ),
         ),
       ),
     );

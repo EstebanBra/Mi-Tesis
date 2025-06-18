@@ -2,6 +2,7 @@ evento:
   - crearEvento:
   - obtenerEventos:
   - eliminarEvento:
+  - editarEvento:
 usuario:
   - login:
   - crearUsuario:

@@ -52,6 +52,23 @@ class EndpointEvento extends _i1.EndpointRef {
         'eliminarEvento',
         {'idEvento': idEvento},
       );
+
+  _i2.Future<_i3.Evento?> editarEvento(
+    int idEvento,
+    String nuevoTitulo,
+    String nuevaDescripcion,
+    DateTime nuevaFecha,
+  ) =>
+      caller.callServerEndpoint<_i3.Evento?>(
+        'evento',
+        'editarEvento',
+        {
+          'idEvento': idEvento,
+          'nuevoTitulo': nuevoTitulo,
+          'nuevaDescripcion': nuevaDescripcion,
+          'nuevaFecha': nuevaFecha,
+        },
+      );
 }
 
 /// {@category Endpoint}

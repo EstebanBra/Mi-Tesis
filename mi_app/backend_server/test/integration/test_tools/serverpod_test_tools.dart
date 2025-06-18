@@ -227,6 +227,43 @@ class _EventoEndpoint {
       }
     });
   }
+
+  _i3.Future<_i4.Evento?> editarEvento(
+    _i1.TestSessionBuilder sessionBuilder,
+    int idEvento,
+    String nuevoTitulo,
+    String nuevaDescripcion,
+    DateTime nuevaFecha,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'evento',
+        method: 'editarEvento',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'evento',
+          methodName: 'editarEvento',
+          parameters: _i1.testObjectToJson({
+            'idEvento': idEvento,
+            'nuevoTitulo': nuevoTitulo,
+            'nuevaDescripcion': nuevaDescripcion,
+            'nuevaFecha': nuevaFecha,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<_i4.Evento?>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
 }
 
 class _UsuarioEndpoint {

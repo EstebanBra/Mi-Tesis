@@ -106,6 +106,42 @@ class Endpoints extends _i1.EndpointDispatch {
             params['idEvento'],
           ),
         ),
+        'editarEvento': _i1.MethodConnector(
+          name: 'editarEvento',
+          params: {
+            'idEvento': _i1.ParameterDescription(
+              name: 'idEvento',
+              type: _i1.getType<int>(),
+              nullable: false,
+            ),
+            'nuevoTitulo': _i1.ParameterDescription(
+              name: 'nuevoTitulo',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+            'nuevaDescripcion': _i1.ParameterDescription(
+              name: 'nuevaDescripcion',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+            'nuevaFecha': _i1.ParameterDescription(
+              name: 'nuevaFecha',
+              type: _i1.getType<DateTime>(),
+              nullable: false,
+            ),
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['evento'] as _i2.EventoEndpoint).editarEvento(
+            session,
+            params['idEvento'],
+            params['nuevoTitulo'],
+            params['nuevaDescripcion'],
+            params['nuevaFecha'],
+          ),
+        ),
       },
     );
     connectors['usuario'] = _i1.EndpointConnector(

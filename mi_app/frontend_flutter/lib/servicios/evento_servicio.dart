@@ -16,4 +16,9 @@ class EventoServicio {
   Future<void> eliminarEvento(int idEvento) async {
     await client.evento.eliminarEvento(idEvento);
   }
+
+  Future<Evento?> editarEvento(int idEvento, String nuevoTitulo, String nuevaDescripcion, DateTime nuevaFecha) async {
+  return await client.evento.editarEvento(idEvento, nuevoTitulo, nuevaDescripcion, nuevaFecha);
+}
+
 }
